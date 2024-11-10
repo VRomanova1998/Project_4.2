@@ -2,6 +2,17 @@ const input = document.querySelector('.input_search');
 const searchResults = document.querySelector('.container');
 const infoContainer = document.querySelector('.infoContainer');
 
+
+const debounce = (fn, debounceTime) => {
+  let timer;
+  return function(){
+    clearTimeout(timer);
+   timer = setTimeout(()=>{
+      fn.apply(this, arguments);
+    }, debounceTime)
+  }
+};
+
 // Создание блока с информацией по выбранному репозиторию
 function createInfoBlock (e){
   document.querySelectorAll('.search_result').forEach(element => element.remove());
@@ -16,8 +27,7 @@ function createInfoBlock (e){
 }
 
 // Функция отправки и обработки запроса на сервер
-function queryResult(){
-setTimeout(async()=>{
+async function queryResult(){
   try {
     let value = document.querySelector('.input_search').value;
       if (value == '' || value == ' ') {
@@ -46,7 +56,7 @@ setTimeout(async()=>{
     } catch(error) {
       console.log(`${error.name}: ${error.message}`);
     }
-}, 400)
+
 }
 
  // Обработка события "удалить информационный блок" 
@@ -58,5 +68,5 @@ setTimeout(async()=>{
      tag.parentElement.remove();
   }, true)
 
-  input.addEventListener('keydown', queryResult);
+  input.addEventListener('keydown', debounce(queryResult, 400));
 
