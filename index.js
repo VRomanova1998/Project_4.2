@@ -21,11 +21,7 @@ async function getResponse(value) {
 
     while (attempt < maxRequest) {
         try {
-          let response = await fetch(`https://api.github.com/search/repositories?q=${value}`, {
-                  headers: {
-                    'Authorization': 'token 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'
-                }
-                });
+          let response = await fetch(`https://api.github.com/search/repositories?q=${value}`);
           if (response.ok) {
             errorMessage.textContent = '';
             return response;
